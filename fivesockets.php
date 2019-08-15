@@ -45,12 +45,12 @@ class fivesockets {
      * 
      * Set before a request for give more parameters. (ids, or other)
      *
-     * @param string $params Your spesific parameters
+     * @param array $params Your spesific parameters
      */
 
     public function SetParams($params) {
         if ($this->CheckIfParamsIsvalid($params)) {
-            $this->params = $params;
+            $this->RequestParams = $params;
         }
     }
 
@@ -64,9 +64,10 @@ class fivesockets {
 
     private function prepare($request, $params) {
         $request = [
+            'headers'       => (!empty($params['headers']) ? $params['headers']: false),
             'type'          => $request,
-            'identifiers'   => ($params != false? $params['identifiers']: null),
-            'headers'       => ($params != false? (!empty($params['headers'])?$params['headers']: false): false)
+            'UseIdsForPost' => (!empty($params['UseIdsForPost']) ? $params['UseIdsForPost']: false),
+            'identifiers'   => (!empty($params['identifiers']) ? $params['identifiers']: null)
         ];
         $request = json_encode($request, true);
         $request = $this->encrypt($request);
